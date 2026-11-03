@@ -51,32 +51,10 @@ button, input { font: inherit; }
 
 /* Hero */
 .hero { padding: 36px 0 18px; }
-.eyebrow {
-  display: inline-flex; align-items: center; gap: 8px;
-  font-size: 12px; letter-spacing: .08em; text-transform: uppercase;
-  color: var(--green); font-weight: 700;
-  background: var(--green-soft); border: 1.5px solid #b7dfc4;
-  border-radius: 999px; padding: 4px 12px;
-}
 .hero h1 {
   margin: 14px 0 10px; font-size: clamp(26px, 4vw, 34px);
   line-height: 1.25; letter-spacing: -.02em; color: var(--ink);
 }
-.hero .lead {
-  margin: 0; max-width: 46em; color: var(--ink-soft); font-size: 14.5px;
-}
-.stats {
-  display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px;
-}
-.stat {
-  background: #fff; border: 1.5px solid var(--line);
-  border-radius: 12px; padding: 10px 14px; min-width: 96px;
-  box-shadow: var(--shadow);
-}
-.stat b { display: block; font-size: 22px; color: var(--blue); line-height: 1.1; }
-.stat span { font-size: 12px; color: var(--ink-faint); }
-.stat.primary { background: var(--yellow-soft); border-color: #e8d36a; }
-.stat.primary b { color: #8a6a00; }
 .legend {
   display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px;
   font-size: 12px; color: var(--ink-soft);
@@ -96,13 +74,6 @@ button, input { font: inherit; }
 }
 .filters-inner { display: flex; flex-direction: column; gap: 10px; }
 .row-filters { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
-.search {
-  flex: 1 1 220px; min-width: 180px;
-  border: 1.5px solid var(--line); border-radius: 999px;
-  padding: 8px 14px; background: #fff; color: var(--ink);
-  outline: none;
-}
-.search:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(43,90,168,.12); }
 .chip {
   border: 1.5px solid var(--line); background: #fff; color: var(--ink-soft);
   border-radius: 999px; padding: 6px 12px; cursor: pointer;
@@ -266,10 +237,7 @@ button, input { font: inherit; }
 </head>
 <body>
 <header class="hero wrap">
-  <div class="eyebrow">内部速览 · Skills 优先</div>
   <h1>Agent Skills / MCP 目录</h1>
-  <p class="lead">Skills = 可版本管理的操作剧本；MCP = 连接真实系统的工具。受限网络环境下可优先评估本地 Skills；需外网的 MCP 放可出网服务器，是否可用须实测。点击条目展开要点、流程与交互示例。</p>
-  <div class="stats" id="stats"></div>
   <div class="legend">
     <span><i style="background:var(--green)"></i>若是内网环境需实际测试</span>
     <span><i style="background:var(--orange)"></i>需服务端外网</span>
@@ -282,7 +250,6 @@ button, input { font: inherit; }
   <div class="wrap filters-inner">
     <div class="cat-tabs" id="catTabs"></div>
     <div class="row-filters">
-      <input class="search" id="q" type="search" placeholder="搜索名称、用途、要点…" autocomplete="off" />
       <div id="typeChips" class="row-filters" style="gap:8px"></div>
       <div id="netChips" class="row-filters" style="gap:8px"></div>
     </div>
@@ -313,7 +280,7 @@ button, input { font: inherit; }
   };
   const CAT_ORDER = (catalog.categories || []).map(c => c.id);
 
-  const state = { cat: 'all', type: 'all', net: 'all', q: '' };
+  const state = { cat: 'all', type: 'all', net: 'all' };
   let mermaidReady = false;
   let mermaidInit = false;
 
@@ -357,20 +324,6 @@ button, input { font: inherit; }
     }
     return { boss, agent };
   }
-
-  // Stats — Skills first
-  const counts = catalog.counts || {};
-  const skillTotal = (counts.skill || 0) + (counts.skill_pack || 0);
-  document.getElementById('stats').innerHTML = [
-    ['primary', skillTotal, 'Skills / Packs'],
-    ['', counts.skill || 0, 'Skill'],
-    ['', counts.skill_pack || 0, 'Skill Pack'],
-    ['', counts.mcp || 0, 'MCP'],
-    ['', counts.by_network && counts.by_network.intranet || 0, '若是内网环境需实际测试'],
-    ['', counts.total || items.length, '条目合计']
-  ].map(([cls, n, label]) =>
-    `<div class="stat ${cls}"><b>${n}</b><span>${label}</span></div>`
-  ).join('');
 
   // Category tabs
   const catMap = Object.fromEntries((catalog.categories || []).map(c => [c.id, c]));
@@ -422,20 +375,6 @@ button, input { font: inherit; }
     if (state.cat !== 'all' && item.category !== state.cat) return false;
     if (state.type !== 'all' && item.type !== state.type) return false;
     if (state.net !== 'all' && item.network !== state.net) return false;
-    if (state.q) {
-      const q = state.q.toLowerCase();
-      const blob = [
-        item.name, item.purpose, item.id,
-        ...(item.key_points || []),
-        ...(item.workflow || []),
-        item.interaction_example || '',
-        item.network_note || '',
-        TYPE_LABEL[item.type] || '',
-        NET_LABEL[item.network] || '',
-        (catMap[item.category] || {}).label_zh || ''
-      ].join('\n').toLowerCase();
-      if (!blob.includes(q)) return false;
-    }
     return true;
   }
 
@@ -570,12 +509,6 @@ button, input { font: inherit; }
       ]);
       renderList();
     }
-  });
-
-  let t = null;
-  document.getElementById('q').addEventListener('input', (e) => {
-    clearTimeout(t);
-    t = setTimeout(() => { state.q = e.target.value.trim(); renderList(); }, 120);
   });
 
   renderList();
