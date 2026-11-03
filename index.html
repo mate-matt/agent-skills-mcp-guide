@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Agent Skills &amp; MCP 预装目录</title>
+<meta name="description" content="公司内部 Agent 预装 Skills / MCP 目录：Skills 是流程剧本，MCP 是系统连接。" />
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<style>
+  :root {
+    --bg: #f7f6f3;
+    --bg-elev: #ffffff;
+    --ink: #1c1b19;
+    --ink-soft: #5c5954;
+    --ink-faint: #8a857c;
+    --line: #e6e2da;
+    --line-strong: #d2cdc3;
+    --accent: #2f5d50;
+    --accent-soft: #e7f0ed;
+    --accent-ink: #1f3f36;
+    --chip: #f0ebe3;
+    --chip-active: #2f5d50;
+    --chip-active-ink: #fff;
+    --badge-mcp: #2b4c7e;
+    --badge-skill: #7a4e2d;
+    --badge-pack: #5a3d6b;
+    --saas: #8a5a12;
+    --saas-bg: #f8efd9;
+    --shadow: 0 1px 2px rgba(28,27,25,.04), 0 8px 24px rgba(28,27,25,.04);
+    --radius: 12px;
+    --max: 1040px;
+    --nav-h: 56px;
+    --font: "Inter", "SF Pro Text", "Segoe UI", "PingFang SC", "Hiragino Sans GB",
+            "Microsoft YaHei", system-ui, -apple-system, sans-serif;
+    --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: calc(var(--nav-h) + 16px); }
+  body {
+    margin: 0;
+    font-family: var(--font);
+    color: var(--ink);
+    background: var(--bg);
+    line-height: 1.65;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+  a:hover { color: var(--accent-ink); }
+
+  .wrap { max-width: var(--max); margin: 0 auto; padding: 0 24px; }
+
+  /* Top nav */
+  .topnav {
+    position: sticky; top: 0; z-index: 50;
+    height: var(--nav-h);
+    background: rgba(247,246,243,.88);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+  .topnav-inner {
+    height: 100%;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .brand {
+    flex: 0 0 auto;
+    font-weight: 650; font-size: 14px; letter-spacing: .01em;
+    color: var(--ink); text-decoration: none; white-space: nowrap;
+  }
+  .brand span { color: var(--accent); }
+  .nav-cats {
+    flex: 1 1 auto;
+    display: flex; gap: 4px; overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .nav-cats::-webkit-scrollbar { display: none; }
+  .nav-cats a {
+    flex: 0 0 auto;
+    padding: 6px 10px;
+    border-radius: 999px;
+    color: var(--ink-soft);
+    text-decoration: none;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  .nav-cats a:hover { background: var(--chip); color: var(--ink); }
+
+  .search {
+    flex: 0 0 200px;
+    position: relative;
+  }
+  .search input {
+    width: 100%;
+    height: 34px;
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+    padding: 0 12px 0 32px;
+    background: var(--bg-elev);
+    font: inherit; font-size: 13px;
+    color: var(--ink);
+    outline: none;
+  }
+  .search input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .search::before {
+    content: "⌕";
+    position: absolute; left: 11px; top: 50%; transform: translateY(-50%);
+    color: var(--ink-faint); font-size: 14px; pointer-events: none;
+  }
+
+  /* Hero */
+  .hero {
+    padding: 56px 0 28px;
+    border-bottom: 1px solid var(--line);
+  }
+  .hero-kicker {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 12px; letter-spacing: .08em; text-transform: uppercase;
+    color: var(--accent); font-weight: 600; margin-bottom: 14px;
+  }
+  .hero h1 {
+    margin: 0 0 14px;
+    font-size: clamp(28px, 4vw, 40px);
+    line-height: 1.2; font-weight: 700; letter-spacing: -.02em;
+  }
+  .hero-lead {
+    margin: 0 0 22px;
+    max-width: 62ch;
+    color: var(--ink-soft);
+    font-size: 17px;
+  }
+  .hero-meta {
+    display: flex; flex-wrap: wrap; gap: 10px 18px;
+    font-size: 13px; color: var(--ink-faint);
+  }
+  .hero-meta strong { color: var(--ink-soft); font-weight: 600; }
+  .pill-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 8px 12px; border-radius: 999px;
+    background: var(--bg-elev); border: 1px solid var(--line);
+    font-size: 13px; color: var(--ink-soft); box-shadow: var(--shadow);
+  }
+  .pill b { color: var(--ink); font-weight: 650; }
+
+  /* Filters */
+  .toolbar {
+    position: sticky; top: var(--nav-h); z-index: 40;
+    background: rgba(247,246,243,.92);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+    padding: 10px 0;
+  }
+  .filters {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+  }
+  .filters .label {
+    font-size: 12px; color: var(--ink-faint); margin-right: 4px;
+  }
+  .chip {
+    appearance: none; border: 1px solid var(--line-strong);
+    background: var(--bg-elev); color: var(--ink-soft);
+    border-radius: 999px; padding: 6px 12px;
+    font: inherit; font-size: 13px; cursor: pointer;
+  }
+  .chip:hover { border-color: var(--accent); color: var(--accent-ink); }
+  .chip.active {
+    background: var(--chip-active); border-color: var(--chip-active);
+    color: var(--chip-active-ink);
+  }
+  .result-count {
+    margin-left: auto; font-size: 12px; color: var(--ink-faint);
+  }
+
+  /* Sections */
+  .cat-section { padding: 40px 0 8px; }
+  .cat-head {
+    display: flex; align-items: baseline; justify-content: space-between;
+    gap: 16px; margin-bottom: 8px;
+  }
+  .cat-head h2 {
+    margin: 0; font-size: 22px; letter-spacing: -.01em; font-weight: 700;
+  }
+  .cat-en { font-size: 13px; color: var(--ink-faint); }
+  .cat-desc {
+    margin: 0 0 22px; color: var(--ink-soft); font-size: 14.5px; max-width: 70ch;
+  }
+
+  .item-list { display: grid; gap: 18px; }
+
+  .item {
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 20px 22px 18px;
+    box-shadow: var(--shadow);
+  }
+  .item.hidden { display: none; }
+  .item-head {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px;
+    margin-bottom: 10px;
+  }
+  .item-name {
+    margin: 0; font-size: 17px; font-weight: 650; letter-spacing: -.01em;
+    flex: 1 1 auto; min-width: 160px;
+  }
+  .badges { display: flex; flex-wrap: wrap; gap: 6px; }
+  .badge {
+    display: inline-flex; align-items: center;
+    font-size: 11px; font-weight: 650; letter-spacing: .04em;
+    text-transform: uppercase; padding: 3px 8px; border-radius: 999px;
+    color: #fff;
+  }
+  .badge.mcp { background: var(--badge-mcp); }
+  .badge.skill { background: var(--badge-skill); }
+  .badge.skill-pack { background: var(--badge-pack); }
+  .saas {
+    font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 999px;
+    background: var(--saas-bg); color: var(--saas);
+  }
+  .purpose {
+    margin: 0 0 8px; color: var(--ink); font-size: 15px;
+  }
+  .why {
+    margin: 0 0 14px; color: var(--ink-soft); font-size: 14px;
+  }
+  .why::before { content: "为何预装 · "; font-weight: 600; color: var(--ink-faint); }
+
+  .workflow-title {
+    margin: 0 0 8px; font-size: 12px; font-weight: 650;
+    letter-spacing: .06em; text-transform: uppercase; color: var(--ink-faint);
+  }
+  .workflow {
+    margin: 0 0 14px; padding-left: 1.25rem;
+    color: var(--ink-soft); font-size: 14px;
+  }
+  .workflow li { margin: 0 0 4px; }
+  .workflow li:nth-child(n+6) { display: none; }
+
+  .diagram-panel {
+    background: #f3f1ec;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin: 0 0 12px;
+    overflow-x: auto;
+  }
+  .diagram-panel .mermaid {
+    display: flex; justify-content: center;
+    font-size: 13px !important;
+  }
+  .item-foot {
+    display: flex; flex-wrap: wrap; gap: 10px 16px;
+    align-items: center; justify-content: space-between;
+    font-size: 13px; color: var(--ink-faint);
+  }
+  .item-foot a { font-weight: 600; }
+  .pop { font-family: var(--mono); font-size: 12px; }
+
+  .empty {
+    display: none; text-align: center; padding: 48px 16px;
+    color: var(--ink-faint); font-size: 15px;
+  }
+  .empty.show { display: block; }
+
+  /* Footer */
+  footer {
+    margin-top: 48px;
+    border-top: 1px solid var(--line);
+    padding: 36px 0 56px;
+  }
+  footer h3 {
+    margin: 0 0 10px; font-size: 15px; font-weight: 700;
+  }
+  footer p, footer li {
+    color: var(--ink-soft); font-size: 14px; margin: 0 0 8px;
+  }
+  footer ul { margin: 0 0 22px; padding-left: 1.2rem; }
+  .foot-grid {
+    display: grid; gap: 28px;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  }
+  .foot-note {
+    margin-top: 20px; padding-top: 16px; border-top: 1px dashed var(--line);
+    font-size: 12px; color: var(--ink-faint);
+  }
+
+  @media (max-width: 820px) {
+    .search { flex: 1 1 140px; }
+    .nav-cats { display: none; }
+    .result-count { width: 100%; margin-left: 0; }
+  }
+  @media print {
+    .topnav, .toolbar { position: static; backdrop-filter: none; }
+    .item { break-inside: avoid; box-shadow: none; }
+    .chip, .search { display: none !important; }
+    body { background: #fff; }
+  }
+</style>
+</head>
+<body>
+  <nav class="topnav" aria-label="主导航">
+    <div class="wrap topnav-inner">
+      <a class="brand" href="#top">Skills <span>&amp;</span> MCP</a>
+      <div class="nav-cats" id="navCats"></div>
+      <div class="search">
+        <label class="visually-hidden" for="q" style="position:absolute;left:-9999px">搜索</label>
+        <input id="q" type="search" placeholder="搜索名称 / 用途…" autocomplete="off" />
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero wrap" id="top">
+    <div class="hero-kicker">内部预装目录 · Preinstall Catalog</div>
+    <h1 id="pageTitle">公司内部 Agent 预装 Skills / MCP 目录</h1>
+    <p class="hero-lead">
+      <b>Skills</b> = 可版本控制的流程剧本（SKILL.md）；
+      <b>MCP</b> = 连接真实系统的工具总线。
+      先定工作流，再挂 MCP——把 SOP 固化为可复用、可审计的 Agent 能力。
+    </p>
+    <div class="hero-meta" id="heroMeta"></div>
+    <div class="pill-row" id="heroPills"></div>
+  </header>
+
+  <div class="toolbar">
+    <div class="wrap filters" id="filters">
+      <span class="label">类型</span>
+      <button type="button" class="chip active" data-type="all">全部</button>
+      <button type="button" class="chip" data-type="mcp">MCP</button>
+      <button type="button" class="chip" data-type="skill">Skill</button>
+      <button type="button" class="chip" data-type="skill-pack">Skill Pack</button>
+      <span class="result-count" id="resultCount"></span>
+    </div>
+  </div>
+
+  <main class="wrap" id="main"></main>
+  <div class="wrap empty" id="empty">没有匹配项。试试清空筛选或换个关键词。</div>
+
+  <footer class="wrap">
+    <div class="foot-grid">
+      <div>
+        <h3>推荐起步组合</h3>
+        <ul>
+          <li><b>Agent Skills 标准</b> + <b>anthropics/skills</b>（文档 / 设计基线）</li>
+          <li><b>GitHub MCP</b> + <b>Context7</b>（源码与最新库文档）</li>
+          <li><b>Playwright MCP</b> 或 <b>Chrome DevTools MCP</b>（浏览器验证）</li>
+          <li>协作面：按团队选 <b>Slack / Linear / Notion / Jira</b> MCP</li>
+        </ul>
+      </div>
+      <div>
+        <h3>发现与选型来源</h3>
+        <ul>
+          <li><a href="https://agentskills.io" rel="noopener">agentskills.io</a> — 开放技能标准</li>
+          <li><a href="https://github.com/anthropics/skills" rel="noopener">anthropics/skills</a> — 官方技能包</li>
+          <li><a href="https://github.com/VoltAgent/awesome-agent-skills" rel="noopener">awesome-agent-skills</a> — 社区精选</li>
+          <li><a href="https://github.com/punkpeye/awesome-mcp-servers" rel="noopener">awesome-mcp-servers</a> — MCP 目录</li>
+        </ul>
+      </div>
+    </div>
+    <p class="foot-note" id="footNote"></p>
+  </footer>
+
+<script id="catalog-data" type="application/json">{"title":"Company-internal Agent Skills \u0026 MCP Preinstall Catalog","title_zh":"公司内部 Agent 预装 Skills / MCP 目录","generated_at":"2026-11-03 18:15 CST (Asia/Shanghai)","research_window":"2025–2026 (snapshot 2026-11-03)","item_count":31,"html_category_groupings":[{"id":"coding-devtools","label_zh":"研发与代码工具","label_en":"Coding \u0026 DevTools","description":"GitHub、语义代码导航、仓库打包、最新库文档、DevTools 调试"},{"id":"docs-knowledge","label_zh":"文档与知识库","label_en":"Docs \u0026 Knowledge","description":"Notion/Confluence、网页抓取、文档技能（PDF/Office）、内部知识检索"},{"id":"collab-tickets","label_zh":"协作与工单","label_en":"Collaboration \u0026 Tickets","description":"Slack、Linear、Jira、工单到 PR 闭环"},{"id":"browser-testing","label_zh":"浏览器与测试","label_en":"Browser \u0026 Testing","description":"Playwright/浏览器自动化、E2E、前端调试"},{"id":"data-devops","label_zh":"数据与运维观测","label_en":"Data, SQL \u0026 Observability","description":"多数据库 SQL、Sentry、Cloudflare、基础设施 MCP"},{"id":"security-design-packs","label_zh":"安全、设计与技能包","label_en":"Security, Design \u0026 Skill Packs","description":"安全审查、Figma、官方/社区 skill 标准与预装包"}],"notes":["Skills = procedural playbooks (SKILL.md); MCP = connectivity to systems.","Prefer official remote SaaS MCP endpoints over archived community wrappers.","Audit scripts and tool permissions before enterprise preinstall.","Stars measure attention, not security/quality."],"items":[{"id":"agent-skills-standard","name":"Agent Skills (SKILL.md)","type":"skill-pack","category":"security-design-packs","purpose":"跨 Cursor/Claude/Copilot 的开放技能标准：SKILL.md + scripts/references，按需加载工作流。","why_preinstall":"公司可把内部 SOP 固化为可版本控制的技能，一次编写多端复用。","workflow":["在 .agents/skills/\u003cname\u003e/ 编写 SKILL.md（name/description frontmatter）","可选附带 scripts/、references/、assets/","Agent 启动时只读元数据；任务匹配时再加载全文","通过 marketplace / gh skill / 团队仓库分发","按需绑定 MCP 工具完成实际系统调用"],"url":"https://agentskills.io","popularity":"Open standard；Cursor + Claude Code + Copilot 官方支持","paid_or_saas":false,"notes":"原 Anthropic 格式开放为跨产品标准","diagram":"flowchart LR\n  A[Task] --\u003e B{Match skill desc?}\n  B --\u003e|yes| C[Load SKILL.md]\n  C --\u003e D[Follow workflow]\n  D --\u003e E[Optional MCP/tools]\n  B --\u003e|no| F[Generic agent]"},{"id":"anthropics-skills","name":"anthropics/skills","type":"skill-pack","category":"security-design-packs","purpose":"Anthropic 官方 Agent Skills 仓库：文档（docx/pptx/xlsx/pdf）、前端设计、skill-creator 等。","why_preinstall":"官方示例与企业文档产出技能，适合作为内部 skill 模板基线。","workflow":["Claude Code: /plugin marketplace add anthropics/skills","安装 document-skills 或 example-skills","用自然语言触发（如 Use the PDF skill…）","Skill 加载说明并调用本地脚本/工具处理文件","输出符合品牌/模板约定的文档产物"],"url":"https://github.com/anthropics/skills","popularity":"~187k GitHub stars；official","paid_or_saas":false,"notes":"含 document-skills 与 example-skills 两组插件","diagram":"flowchart TD\n  U[User: make PPTX] --\u003e A[Load pptx skill]\n  A --\u003e B[Apply brand/template rules]\n  B --\u003e C[Generate/edit file]\n  C --\u003e D[Deliver artifact]"},{"id":"voltagent-awesome-skills","name":"VoltAgent awesome-agent-skills","type":"skill-pack","category":"security-design-packs","purpose":"精选 1000+ 真实工程团队 Agent Skills 目录，兼容 Cursor/Claude/Codex/Gemini/Copilot。","why_preinstall":"发现与选型入口；公司可 fork 后挑选子集做内部白名单。","workflow":["浏览仓库分类与官方/社区技能","挑选与栈匹配的 SKILL.md","复制或用安装器放到 .cursor/skills 或 .claude/skills","在 Agent 中用描述触发","评审后纳入公司 marketplace"],"url":"https://github.com/VoltAgent/awesome-agent-skills","popularity":"~37k stars；widely cited awesome list","paid_or_saas":false,"notes":"目录型仓库，安装前需审查脚本权限","diagram":"flowchart LR\n  C[Catalog] --\u003e P[Pick subset]\n  P --\u003e R[Review scripts]\n  R --\u003e I[Install to team marketplace]\n  I --\u003e A[Agents use skills]"},{"id":"aas-skills","name":"Agentic Awesome Skills (AAS)","type":"skill-pack","category":"security-design-packs","purpose":"2800+ 可安装 SKILL.md 剧本库 + AAS Core（本地目录发现/选型/计划预览）。","why_preinstall":"规模化技能库 + 可控安装预览，适合企业批量治理。","workflow":["npx agentic-awesome-skills --cursor（或对应 Agent 标志）","Agent/CLI 搜索本地目录并选型","预览计划后再 apply","技能进入项目或用户 skill 目录","用 @skill-name / 自然语言调用"],"url":"https://github.com/sickn33/agentic-awesome-skills","popularity":"~49k stars","paid_or_saas":false,"notes":"量大需严格 preview/安全门禁；支持 gh skill install","diagram":"flowchart TD\n  S[Search catalog] --\u003e V[Validate stack]\n  V --\u003e P[Plan preview]\n  P --\u003e I[Install pin version]\n  I --\u003e U[Use in agent]"},{"id":"cursor-skills-marketplace","name":"Cursor Skills \u0026 Marketplace Plugins","type":"skill-pack","category":"security-design-packs","purpose":"Cursor 官方技能/插件市场：插件可捆绑 skills、MCP、rules、commands、hooks。","why_preinstall":"Teams/Enterprise 可发团队 marketplace，统一预装内部技能与 MCP。","workflow":["在 Customize 打开 Marketplace","安装官方或团队插件","技能出现在 .cursor/skills 或插件安装目录","可选 Publish 个人技能到团队 Default marketplace","Cloud/self-hosted worker 用项目技能或镜像烘焙"],"url":"https://cursor.com/docs/skills","popularity":"Official Cursor；手动审核上架插件","paid_or_saas":true,"notes":"Teams/Enterprise 功能；社区见 cursor.directory","diagram":"flowchart LR\n  M[Marketplace] --\u003e PL[Plugin]\n  PL --\u003e SK[Skills]\n  PL --\u003e MCP[MCP servers]\n  PL --\u003e R[Rules/hooks]\n  SK --\u003e Agent"},{"id":"netresearch-marketplace","name":"Netresearch Agentic Skills Marketplace","type":"skill-pack","category":"security-design-packs","purpose":"精选 ~41 条面向栈的技能（Docker/安全/文档/Jira 等），跨 30+ Agent。","why_preinstall":"小而精、可审计，比巨型目录更适合作为公司起步白名单。","workflow":["/plugin marketplace add netresearch/claude-code-marketplace","选择插件如 typo3-conformance 或安全/文档包","Install；或 npx skills add \u003crepo\u003e --skill \u003cname\u003e","Agent 按 SKILL.md 执行栈相关检查","结果回写任务或 PR 评论"],"url":"https://github.com/netresearch/claude-code-marketplace","popularity":"Curated (~87 stars)；agentskills.io aligned","paid_or_saas":false,"notes":"偏 curation 质量而非星标规模","diagram":"flowchart TD\n  M[Add marketplace] --\u003e I[Install one plugin]\n  I --\u003e S[Skill activates]\n  S --\u003e C[Stack checks]\n  C --\u003e O[Report / PR]"},{"id":"anthropic-document-skills","name":"Anthropic Document Skills (docx/pptx/xlsx/pdf)","type":"skill","category":"docs-knowledge","purpose":"官方文档技能：创建/编辑/分析 Word、PPT、Excel、PDF（含表单）。","why_preinstall":"内部报告、方案、合规表单产出的标准化技能。","workflow":["安装 anthropics document-skills 插件","用户指定模板与源材料","Skill 加载格式规则与脚本","生成或抽取字段","校验版式后交付文件"],"url":"https://github.com/anthropics/skills","popularity":"Official Anthropic document-skills","paid_or_saas":false,"notes":"包含在 anthropics/skills 仓库","diagram":"flowchart LR\n  In[Brief+template] --\u003e Sk[docx/pptx/xlsx/pdf skill]\n  Sk --\u003e Gen[Generate/edit]\n  Gen --\u003e Out[Office/PDF file]"},{"id":"code-review-skill","name":"Code Review Skill / Agent","type":"skill","category":"coding-devtools","purpose":"可复用代码评审工作流：diff 分析、风险分级、建议修复（Claude /code-review、Cursor marketplace agents）。","why_preinstall":"统一评审清单，降低遗漏安全与质量问题。","workflow":["获取 PR/本地 diff","按 checklist 检查正确性/安全/测试/可读性","分级问题并给出可操作建议","可选联动 GitHub MCP 发表评论","记录需人工确认的 breaking changes"],"url":"https://cursor.com/marketplace/agents/code-reviewer","popularity":"Widely bundled；Cursor marketplace + Claude Code /code-review","paid_or_saas":false,"notes":"实现因宿主而异；可自建公司 checklist 技能","diagram":"flowchart TD\n  Diff --\u003e Review[Skill checklist]\n  Review --\u003e Issues[Ranked findings]\n  Issues --\u003e Fix[Suggest patches]\n  Fix --\u003e GH[Optional PR comment]"},{"id":"security-review-skill","name":"Security Review Skill (+ SonarQube MCP)","type":"skill","category":"security-design-packs","purpose":"安全审查技能：密钥泄漏、注入、鉴权、依赖风险；可配合 SonarQube MCP。","why_preinstall":"把安全左移进 Agent 默认路径，满足合规预检。","workflow":["圈定变更文件与依赖清单","按威胁模型检查 OWASP 类问题","可选调用 SonarQube MCP 扫漏洞/坏味道","输出严重级别与修复建议","阻断高危或要求人工审批"],"url":"https://cursor.com/marketplace/mcp/sonarqube","popularity":"Cursor marketplace SonarQube；security skills widely cited","paid_or_saas":true,"notes":"SonarQube 本身为商业/自托管 SaaS；技能可开源自建","diagram":"flowchart LR\n  Code --\u003e Skill[Security skill]\n  Skill --\u003e Sonar[SonarQube MCP]\n  Sonar --\u003e Report\n  Report --\u003e Gate{High risk?}\n  Gate --\u003e|yes| Block\n  Gate --\u003e|no| Continue"},{"id":"frontend-design-skill","name":"Frontend Design Skill (Anthropic)","type":"skill","category":"security-design-packs","purpose":"前端 UI/UX 设计与实现指导技能，配合 Figma MCP 落地像素级实现。","why_preinstall":"统一设计语言与组件约定，减少 UI 漂移。","workflow":["读取设计规范/品牌技能","可选拉取 Figma 节点","生成组件结构与样式","用浏览器 MCP 视觉验收","迭代无到位"],"url":"https://github.com/anthropics/skills","popularity":"Official example skill in anthropics/skills","paid_or_saas":false,"notes":"常与 Figma-Context-MCP 组合","diagram":"flowchart TD\n  Spec --\u003e DesignSkill\n  FigmaMCP --\u003e DesignSkill\n  DesignSkill --\u003e Code\n  Code --\u003e BrowserQA"},{"id":"github-mcp","name":"GitHub MCP Server","type":"mcp","category":"coding-devtools","purpose":"官方 GitHub MCP：仓库、Issues、PR、Actions、代码搜索。","why_preinstall":"编码 Agent 的默认源码与协作总线。","workflow":["OAuth/PAT 连接 github/github-mcp-server","搜索/读取仓库与 issue","创建分支、提交、开 PR","查询 CI Actions 状态","根据失败日志修复并推送"],"url":"https://github.com/github/github-mcp-server","popularity":"~34k stars；official GitHub","paid_or_saas":true,"notes":"需 GitHub 账号/组织权限；免费额度视计划","diagram":"flowchart LR\n  Agent --\u003e MCP[GitHub MCP]\n  MCP --\u003e Repo\n  MCP --\u003e PR\n  MCP --\u003e Actions\n  Actions --\u003e Agent"},{"id":"context7","name":"Context7","type":"mcp","category":"coding-devtools","purpose":"为 Agent 提供最新库文档与代码示例，缓解训练数据过时。","why_preinstall":"显著降低幻觉 API；几乎所有编码 Agent 的高 ROI 预装。","workflow":["安装 upstash/context7 MCP","用户/Agent 指定库与问题","检索最新 docs 片段","注入上下文后生成代码","对照文档校验 API"],"url":"https://github.com/upstash/context7","popularity":"~64k stars；mcp.market top；~450k downloads/wk","paid_or_saas":true,"notes":"有免费层；重度用量可能需 Context7/Upstash 计划","diagram":"flowchart TD\n  Q[How to use lib X?] --\u003e C7[Context7 MCP]\n  C7 --\u003e Docs[Fresh docs]\n  Docs --\u003e Agent\n  Agent --\u003e Code"},{"id":"serena","name":"Serena MCP","type":"mcp","category":"coding-devtools","purpose":"面向 Agent 的语义检索与编辑工具包（LSP 风格 IDE for agent）。","why_preinstall":"大仓精确导航与重构，比纯文本搜索更稳。","workflow":["对仓库启动 Serena MCP","符号级搜索与引用查找","读取相关片段","语义编辑/重构","跑测试验证"],"url":"https://github.com/oraios/serena","popularity":"~31k stars","paid_or_saas":false,"notes":"开源本地/自托管；注意索引资源占用","diagram":"flowchart LR\n  Agent --\u003e Serena\n  Serena --\u003e Index[Code index/LSP]\n  Index --\u003e Edit\n  Edit --\u003e Test"},{"id":"repomix","name":"Repomix","type":"mcp","category":"coding-devtools","purpose":"把整个仓库打包成 AI 友好的单文件/结构化上下文。","why_preinstall":"新项目 onboarding、架构问答、跨文件分析的快速上下文源。","workflow":["对目标仓运行 Repomix（CLI 或 MCP）","配置忽略规则与输出格式","生成打包上下文","Agent 基于打包结果回答/规划","再切回细粒度工具改代码"],"url":"https://github.com/yamadashy/repomix","popularity":"~29k stars；~112k downloads/wk (MCP)","paid_or_saas":false,"notes":"注意敏感文件排除与 token 成本","diagram":"flowchart TD\n  Repo --\u003e Pack[Repomix]\n  Pack --\u003e Bundle\n  Bundle --\u003e Agent\n  Agent --\u003e Plan/Answer"},{"id":"chrome-devtools-mcp","name":"Chrome DevTools MCP","type":"mcp","category":"browser-testing","purpose":"官方 Chrome DevTools 暴露给编码 Agent：调试、性能、DOM/网络。","why_preinstall":"前端故障排查与性能分析标准入口。","workflow":["连接 ChromeDevTools/chrome-devtools-mcp","打开目标页面","检查 console/network/performance","定位问题并改代码","复查指标"],"url":"https://github.com/ChromeDevTools/chrome-devtools-mcp","popularity":"~55k stars；official Chrome；~1.3M downloads/wk","paid_or_saas":false,"notes":"本地 Chrome；企业环境需允许调试端口策略","diagram":"flowchart LR\n  Agent --\u003e CDT[Chrome DevTools MCP]\n  CDT --\u003e Browser\n  Browser --\u003e Signals[Console/Net/Perf]\n  Signals --\u003e Fix"},{"id":"playwright-mcp","name":"Playwright MCP","type":"mcp","category":"browser-testing","purpose":"Microsoft 官方 Playwright MCP：浏览器自动化、E2E、可访问性快照。","why_preinstall":"测试与回归自动化的事实标准之一。","workflow":["启动 @playwright/mcp","导航并获取页面快照","执行点击/填写/断言","生成或更新测试脚本","在 CI 中复用"],"url":"https://github.com/microsoft/playwright-mcp","popularity":"~39k stars；official Microsoft；~8.5M downloads/wk","paid_or_saas":false,"notes":"开源；浏览器依赖本地/CI 镜像","diagram":"flowchart TD\n  Spec --\u003e PW[Playwright MCP]\n  PW --\u003e Act[Navigate/act]\n  Act --\u003e Assert\n  Assert --\u003e TestCode"},{"id":"browser-use-mcp","name":"Browser Use MCP","type":"mcp","category":"browser-testing","purpose":"高星浏览器使用 Agent 工具，适合复杂网页操作与探索。","why_preinstall":"补齐 Playwright 之外的“自主浏览”场景（内部工具操作）。","workflow":["连接 Browser Use MCP","给出目标 URL 与任务目标","Agent 规划浏览步骤","执行并抽取结果","回写摘要或工单"],"url":"https://github.com/browser-use/browser-use","popularity":"~116k+ stars class；mcp.market #1 by stars","paid_or_saas":true,"notes":"开源核心 + browser-use.com 商业选项；需严格沙箱","diagram":"flowchart LR\n  Goal --\u003e BU[Browser Use]\n  BU --\u003e Plan\n  Plan --\u003e Browse\n  Browse --\u003e Extract\n  Extract --\u003e Result"},{"id":"notion-mcp","name":"Notion MCP","type":"mcp","category":"docs-knowledge","purpose":"官方远程 Notion MCP：搜索/读写页面与数据库（规格、Runbook、决策日志）。","why_preinstall":"知识库与产品规格的主入口；本地 notion-mcp-server 已不维护。","workflow":["claude mcp add --transport http notion https://mcp.notion.com/mcp","OAuth 授权工作区","搜索相关页面/DB","读取规格并实现代码","回写状态或会议纪要"],"url":"https://mcp.notion.com/mcp","popularity":"Official Notion；com.notion/mcp registry","paid_or_saas":true,"notes":"需要 Notion 工作区与 OAuth；付费计划视席位","diagram":"flowchart TD\n  Agent --\u003e NotionMCP\n  NotionMCP --\u003e Pages\n  NotionMCP --\u003e DB\n  Pages --\u003e CodeTask\n  CodeTask --\u003e UpdatePage"},{"id":"slack-mcp","name":"Slack MCP","type":"mcp","category":"collab-tickets","purpose":"官方 Slack MCP：搜频道/线程、读上下文、发消息与 Canvas。","why_preinstall":"决策常在线程里；Agent 需要读讨论再动手。","workflow":["连接 https://mcp.slack.com/mcp（OAuth/预注册客户端）","搜索相关频道与线程","提取决策与行动项","执行开发任务","回帖进度（经审批策略）"],"url":"https://mcp.slack.com/mcp","popularity":"Official；Claude directory ~92k installs cited","paid_or_saas":true,"notes":"需 Slack 应用审批；写入需治理","diagram":"flowchart LR\n  Thread --\u003e SlackMCP\n  SlackMCP --\u003e Context\n  Context --\u003e AgentWork\n  AgentWork --\u003e Reply"},{"id":"linear-mcp","name":"Linear MCP","type":"mcp","category":"collab-tickets","purpose":"官方 Linear MCP：Issues、Projects、Comments、状态流转。","why_preinstall":"研发工单系统直连，形成 ticket→code→PR 闭环。","workflow":["连接 https://mcp.linear.app/mcp","拉取 assigned issues","阅读描述与验收标准","实现并开 PR","更新 issue 状态/评论"],"url":"https://mcp.linear.app/mcp","popularity":"Official；~48k Claude directory installs cited","paid_or_saas":true,"notes":"Linear SaaS 订阅","diagram":"flowchart TD\n  Issue --\u003e LinearMCP\n  LinearMCP --\u003e Agent\n  Agent --\u003e PR\n  PR --\u003e StatusUpdate"},{"id":"atlassian-mcp","name":"Atlassian Rovo MCP (Jira/Confluence)","type":"mcp","category":"collab-tickets","purpose":"官方远程 MCP：Jira、Confluence、Bitbucket、JSM、Compass、Loom 等。","why_preinstall":"企业标配工单+文档平台；一连接多产品。","workflow":["连接 https://mcp.atlassian.com/v2/mcp","OAuth 2.1 或 API token","用 JQL/CQL 搜索问题与页面","实现并关联 Bitbucket/GitHub PR","更新 Jira 并写 Confluence 说明"],"url":"https://github.com/atlassian/atlassian-mcp-server","popularity":"Official；~1.1k repo stars；~92k Claude installs cited；Rovo credits","paid_or_saas":true,"notes":"调用消耗 Rovo credits；v2 推荐端点","diagram":"flowchart LR\n  Jira --\u003e Rovo[Atlassian MCP v2]\n  Confluence --\u003e Rovo\n  Rovo --\u003e Agent\n  Agent --\u003e Bitbucket/PR\n  Agent --\u003e UpdateTicket"},{"id":"firecrawl-mcp","name":"Firecrawl MCP","type":"mcp","category":"docs-knowledge","purpose":"官方 Firecrawl MCP：搜索、抓取、爬取、映射网页为 LLM 友好内容。","why_preinstall":"补充内部知识库之外的外部文档/竞品/规范抓取。","workflow":["配置 FIRECRAWL_API_KEY","search/scrape 目标站点","清洗为 markdown","Agent 总结或写入知识库","可选 monitor 页面变更"],"url":"https://github.com/firecrawl/firecrawl-mcp-server","popularity":"~7.8k stars；official Firecrawl","paid_or_saas":true,"notes":"Firecrawl API 付费；自托管另有方案","diagram":"flowchart TD\n  URL --\u003e FC[Firecrawl MCP]\n  FC --\u003e MD[Markdown]\n  MD --\u003e Agent\n  Agent --\u003e KB/Notion"},{"id":"cloudflare-docs-mcp","name":"Cloudflare MCP (API + Docs)","type":"mcp","category":"data-devops","purpose":"Cloudflare 官方 MCP：平台 API 与产品文档，服务 Workers/DNS/安全配置。","why_preinstall":"使用 Cloudflare 栈的团队的 DevOps Agent 必备。","workflow":["连接 https://mcp.cloudflare.com/mcp 或产品 docs MCP","OAuth/API token","查询资源与文档","生成或应用配置变更","验证部署状态"],"url":"https://developers.cloudflare.com/agents/model-context-protocol/cloudflare/servers-for-cloudflare/","popularity":"Official Cloudflare","paid_or_saas":true,"notes":"依赖 Cloudflare 账户；建议用最小权限 token","diagram":"flowchart LR\n  Agent --\u003e CF[Cloudflare MCP]\n  CF --\u003e Docs\n  CF --\u003e API\n  API --\u003e Deploy"},{"id":"mcp-toolbox-db","name":"MCP Toolbox for Databases","type":"mcp","category":"data-devops","purpose":"Google 开源多数据库 MCP：Postgres/MySQL/Mongo/BigQuery/Redis 等。","why_preinstall":"统一 SQL/数据访问面，替代已归档的参考 Postgres MCP。","workflow":["部署 googleapis/mcp-toolbox","配置数据源与只读优先凭据","Agent 发起结构化查询工具","审查结果并生成报表/修复","审计日志留存"],"url":"https://github.com/googleapis/mcp-toolbox","popularity":"~17k stars；official Google","paid_or_saas":false,"notes":"开源；连接的云数据库可能产生费用；务必最小权限","diagram":"flowchart TD\n  Agent --\u003e Toolbox\n  Toolbox --\u003e PG[(Postgres)]\n  Toolbox --\u003e BQ[(BigQuery)]\n  Toolbox --\u003e Other[(MySQL/Mongo/...)]\n  Toolbox --\u003e Result"},{"id":"sentry-mcp","name":"Sentry MCP","type":"mcp","category":"data-devops","purpose":"官方 Sentry MCP：查询错误、问题、性能线索并指导修复。","why_preinstall":"生产问题闭环：告警→定位→补丁→验证。","workflow":["连接 https://mcp.sentry.dev/mcp","按 org/project 拉取 issue","读取堆栈与面包屑","在仓库定位并修复","关联 PR / 标记 resolved"],"url":"https://mcp.sentry.dev/","popularity":"Official Sentry；getsentry/toolkit ~952 stars","paid_or_saas":true,"notes":"Sentry SaaS/自托管许可","diagram":"flowchart LR\n  Error --\u003e SentryMCP\n  SentryMCP --\u003e Stack\n  Stack --\u003e Fix\n  Fix --\u003e PR\n  PR --\u003e Resolve"},{"id":"figma-context-mcp","name":"Figma Context MCP (Framelink)","type":"mcp","category":"security-design-packs","purpose":"把 Figma 布局/节点信息提供给 Cursor 等编码 Agent。","why_preinstall":"设计到代码的高保真桥梁，减少截图猜尺寸。","workflow":["配置 Figma access token","Agent 请求文件/节点","获取布局与样式上下文","生成 UI 代码","浏览器视觉对比"],"url":"https://github.com/GLips/Figma-Context-MCP","popularity":"~16k stars；~84k downloads/wk","paid_or_saas":true,"notes":"需要 Figma 账号/计划；Framelink 有商业产品","diagram":"flowchart TD\n  Figma --\u003e MCP[Figma Context MCP]\n  MCP --\u003e Layout\n  Layout --\u003e UICode\n  UICode --\u003e VisualQA"},{"id":"memory-mcp","name":"MCP Memory (reference)","type":"mcp","category":"docs-knowledge","purpose":"官方参考 Memory MCP：跨会话知识图谱式记忆。","why_preinstall":"给内部 Agent 记住项目约定与用户偏好（注意隐私治理）。","workflow":["npx -y @modelcontextprotocol/server-memory","写入实体与关系","后续任务检索记忆","更新过时事实","定期审计敏感内容"],"url":"https://github.com/modelcontextprotocol/servers","popularity":"Official MCP reference server","paid_or_saas":false,"notes":"参考实现；企业常换自建向量/图谱记忆","diagram":"flowchart LR\n  Fact --\u003e MemoryMCP\n  MemoryMCP --\u003e Graph\n  Graph --\u003e Recall\n  Recall --\u003e Agent"},{"id":"sequential-thinking-mcp","name":"Sequential Thinking MCP","type":"mcp","category":"coding-devtools","purpose":"参考 MCP：结构化分步思考，利于复杂排障与规划。","why_preinstall":"低成本提升复杂任务可审计推理链。","workflow":["启用 sequential-thinking server","把大问题拆成步骤","逐步修订思考","产出行动计划","再调用执行类 MCP"],"url":"https://github.com/modelcontextprotocol/servers","popularity":"Official MCP reference；widely cited","paid_or_saas":false,"notes":"纯推理辅助，无外部 SaaS","diagram":"flowchart TD\n  Problem --\u003e ST[Sequential Thinking]\n  ST --\u003e Steps\n  Steps --\u003e Plan\n  Plan --\u003e ExecuteMCPs"},{"id":"awesome-mcp-servers","name":"awesome-mcp-servers","type":"skill-pack","category":"security-design-packs","purpose":"最大 MCP 服务器策展列表（发现用，不是生产服务器）。","why_preinstall":"作为内部选型目录来源；安装前必须审计。","workflow":["在 punkpeye/awesome-mcp-servers 搜索品类","打开具体仓库检查 license/活跃度/安全","沙箱试用","加入公司白名单","写入内部预装清单"],"url":"https://github.com/punkpeye/awesome-mcp-servers","popularity":"~97k stars；primary discovery list","paid_or_saas":false,"notes":"列表项质量参差；勿整表盲装","diagram":"flowchart LR\n  List --\u003e Candidate\n  Candidate --\u003e Audit\n  Audit --\u003e Allowlist\n  Allowlist --\u003e Preinstall"},{"id":"gh-skill-cli","name":"gh skill (GitHub CLI)","type":"skill-pack","category":"security-design-packs","purpose":"GitHub CLI 的 skill 包管理：跨 Copilot/Claude/Cursor/Codex 安装与钉版本。","why_preinstall":"企业技能分发与 provenance（来源/ref/SHA）治理。","workflow":["gh skill search \u003ckeyword\u003e","gh skill preview 审查内容与 allowed-tools","gh skill install OWNER/REPO skill --pin","写入对应 Agent 的 skills 目录","gh skill update 受控升级"],"url":"https://www.bighatgroup.com/blog/gh-skill-github-cli-agent-skills-management/","popularity":"GitHub public preview (2026)；widely discussed","paid_or_saas":false,"notes":"依赖 gh；企业应配合 tag protection/secret scanning","diagram":"flowchart TD\n  Search --\u003e Preview\n  Preview --\u003e InstallPin\n  InstallPin --\u003e Agents\n  Agents --\u003e UpdateGate"},{"id":"prisma-mcp","name":"Prisma MCP Server","type":"mcp","category":"data-devops","purpose":"Prisma 生态 MCP：schema/数据模型相关 Agent 工具。","why_preinstall":"Node/TS 后端团队管理 schema 与迁移的常用配套。","workflow":["安装 Prisma MCP","读取/讨论 schema","拟定 migration","生成客户端代码变更","在预发验证"],"url":"https://www.prisma.io","popularity":"High visibility on MCP toplists (~47k associated)","paid_or_saas":true,"notes":"Prisma ORM 开源；Prisma Data Platform 等为 SaaS","diagram":"flowchart LR\n  Schema --\u003e PrismaMCP\n  PrismaMCP --\u003e Migrate\n  Migrate --\u003e Client\n  Client --\u003e App"}]}</script>
+<script>
+(function () {
+  const raw = document.getElementById('catalog-data').textContent;
+  const data = JSON.parse(raw);
+  const typeLabel = { mcp: 'MCP', skill: 'Skill', 'skill-pack': 'Skill Pack' };
+  const main = document.getElementById('main');
+  const navCats = document.getElementById('navCats');
+  const empty = document.getElementById('empty');
+  const q = document.getElementById('q');
+  const resultCount = document.getElementById('resultCount');
+  let activeType = 'all';
+  let query = '';
+
+  document.getElementById('pageTitle').textContent = data.title_zh || data.title;
+  document.getElementById('heroMeta').innerHTML =
+    '<span><strong>' + data.item_count + '</strong> 条目</span>' +
+    '<span><strong>' + (data.html_category_groupings || []).length + '</strong> 分类</span>' +
+    '<span>生成于 <strong>' + esc(data.generated_at) + '</strong></span>' +
+    '<span>研究窗口 <strong>' + esc(data.research_window || '') + '</strong></span>';
+
+  const counts = { mcp: 0, skill: 0, 'skill-pack': 0 };
+  (data.items || []).forEach(function (it) { counts[it.type] = (counts[it.type] || 0) + 1; });
+  document.getElementById('heroPills').innerHTML =
+    '<span class="pill"><b>' + counts.mcp + '</b> MCP</span>' +
+    '<span class="pill"><b>' + counts.skill + '</b> Skill</span>' +
+    '<span class="pill"><b>' + counts['skill-pack'] + '</b> Skill Pack</span>';
+
+  document.getElementById('footNote').textContent =
+    (data.notes || []).join(' · ') + ' · 单页静态文件，可直接分享。';
+
+  (data.html_category_groupings || []).forEach(function (cat) {
+    const a = document.createElement('a');
+    a.href = '#' + cat.id;
+    a.textContent = cat.label_zh;
+    navCats.appendChild(a);
+  });
+
+  const byCat = {};
+  (data.items || []).forEach(function (it) {
+    (byCat[it.category] = byCat[it.category] || []).push(it);
+  });
+
+  (data.html_category_groupings || []).forEach(function (cat) {
+    const section = document.createElement('section');
+    section.className = 'cat-section';
+    section.id = cat.id;
+
+    const head = document.createElement('div');
+    head.className = 'cat-head';
+    head.innerHTML = '<h2>' + esc(cat.label_zh) + '</h2><span class="cat-en">' + esc(cat.label_en) + '</span>';
+    section.appendChild(head);
+
+    const desc = document.createElement('p');
+    desc.className = 'cat-desc';
+    desc.textContent = cat.description || '';
+    section.appendChild(desc);
+
+    const list = document.createElement('div');
+    list.className = 'item-list';
+
+    (byCat[cat.id] || []).forEach(function (it) {
+      list.appendChild(renderItem(it));
+    });
+
+    section.appendChild(list);
+    main.appendChild(section);
+  });
+
+  function renderItem(it) {
+    const el = document.createElement('article');
+    el.className = 'item';
+    el.dataset.type = it.type;
+    el.dataset.cat = it.category;
+    el.dataset.id = it.id;
+    const hay = [it.name, it.purpose, it.why_preinstall, it.notes, it.popularity, it.type]
+      .concat(it.workflow || []).join(' ').toLowerCase();
+    el.dataset.hay = hay;
+
+    const steps = (it.workflow || []).slice(0, 5)
+      .map(function (s) { return '<li>' + esc(s) + '</li>'; }).join('');
+
+    el.innerHTML =
+      '<div class="item-head">' +
+        '<h3 class="item-name">' + esc(it.name) + '</h3>' +
+        '<div class="badges">' +
+          '<span class="badge ' + esc(it.type) + '">' + esc(typeLabel[it.type] || it.type) + '</span>' +
+          (it.paid_or_saas ? '<span class="saas">SaaS / 付费面</span>' : '') +
+        '</div>' +
+      '</div>' +
+      '<p class="purpose">' + esc(it.purpose || '') + '</p>' +
+      (it.why_preinstall ? '<p class="why">' + esc(it.why_preinstall) + '</p>' : '') +
+      (steps ? '<div class="workflow-title">工作流</div><ol class="workflow">' + steps + '</ol>' : '') +
+      (it.diagram ? '<div class="diagram-panel"><pre class="mermaid">' + esc(it.diagram) + '</pre></div>' : '') +
+      '<div class="item-foot">' +
+        '<a href="' + escAttr(it.url || '#') + '" target="_blank" rel="noopener">来源 / 文档 ↗</a>' +
+        '<span class="pop">' + esc(it.popularity || '') + '</span>' +
+      '</div>';
+    return el;
+  }
+
+  function esc(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+  function escAttr(s) { return esc(s).replace(/'/g, '&#39;'); }
+
+  document.getElementById('filters').addEventListener('click', function (e) {
+    const btn = e.target.closest('.chip');
+    if (!btn) return;
+    activeType = btn.dataset.type;
+    document.querySelectorAll('.chip').forEach(function (c) {
+      c.classList.toggle('active', c === btn);
+    });
+    applyFilter();
+  });
+
+  q.addEventListener('input', function () {
+    query = q.value.trim().toLowerCase();
+    applyFilter();
+  });
+
+  function applyFilter() {
+    let shown = 0;
+    document.querySelectorAll('.item').forEach(function (el) {
+      const typeOk = activeType === 'all' || el.dataset.type === activeType;
+      const qOk = !query || el.dataset.hay.indexOf(query) !== -1;
+      const ok = typeOk && qOk;
+      el.classList.toggle('hidden', !ok);
+      if (ok) shown++;
+    });
+    document.querySelectorAll('.cat-section').forEach(function (sec) {
+      const any = sec.querySelector('.item:not(.hidden)');
+      sec.style.display = any ? '' : 'none';
+    });
+    empty.classList.toggle('show', shown === 0);
+    resultCount.textContent = '显示 ' + shown + ' / ' + (data.items || []).length;
+  }
+
+  applyFilter();
+
+  if (window.mermaid) {
+    mermaid.initialize({
+      startOnLoad: false,
+      theme: 'base',
+      securityLevel: 'strict',
+      themeVariables: {
+        fontFamily: 'Inter, system-ui, sans-serif',
+        fontSize: '13px',
+        primaryColor: '#e7f0ed',
+        primaryTextColor: '#1c1b19',
+        primaryBorderColor: '#2f5d50',
+        lineColor: '#8a857c',
+        secondaryColor: '#f0ebe3',
+        tertiaryColor: '#f7f6f3',
+        background: '#f3f1ec'
+      }
+    });
+    mermaid.run({ querySelector: '.mermaid' }).catch(function () {});
+  }
+})();
+</script>
+</body>
+</html>
